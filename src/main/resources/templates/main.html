@@ -13,4 +13,27 @@
 		<div id="top" th:include="template :: masthead"></div>
 		
 		<div id="middle">
+			<form method="post" action="/main">
+				<fieldset>
+					<div class="form-group-lifts">
+						<input autofocus="true" class="form-control" name="liftName" placeholder="Lift Name" type="text"/>
+					</div>
+					<div class="form-group-lifts">
+                        <input class="form-control" name="weight" placeholder="Weight(lbs)" type="text"/>
+                    </div>
+                    <div class="form-group-lifts">
+                        <input class="form-control" name="sets" placeholder="# of Sets" type="text"/>
+                    </div>
+                    <div class="form-group-lifts">
+                        <input class="form-control" name="reps" placeholder="# of Reps" type="text"/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+            
+        <div th:replace="template :: footer"></div>
+        
+        </div>
+    </body>
+ </html>
 		
