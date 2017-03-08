@@ -15,28 +15,25 @@
 
         <div id="middle">
 
-            <form method="post" action="/login">
+            <form method="post" action="/register">
                 <fieldset>
                     <div class="form-group">
-                    	<p class="invalid-name" th:text="${userNonExistant}"></p>
+                    <p class="invalid-name" th:text="${usermessage}"></p>
                         <input class="form-control" name="name" placeholder="Username" type="text"/>
                     </div>
                     <div class="form-group">
                         <input class="form-control" name="password" placeholder="Password" type="password"/>
-                        <p class="invalid-pass" th:text="${invalidPassword}"></p>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Log In</button>
+                    <p class="password-missmatch" th:text="${passwordmessage}"></p>
+                        <input class="form-control" name="confirmPassword" placeholder="Confirm Password" type="password"/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Register</button>
                     </div>
                 </fieldset>
             </form>
-            <div>
-                <a href="/register">register</a> for an account
-            </div>
         </div>
-
-        <div th:replace="template :: footer"></div>
-
     </div>
 
 </body>

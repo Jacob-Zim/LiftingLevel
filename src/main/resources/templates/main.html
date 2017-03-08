@@ -4,6 +4,36 @@
 </head>
 <style>
     #top {text-align: center;}
+    .dropbtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .dropbtn:hover, .dropbtn:focus {
+    	background-color: #000000;
+    }
+    .dropdown {
+    	position: relative;
+    	display: inline-block;
+	}
+	 .userOptionsBtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .userOptionsBtn:hover, .userOptionsBtn:focus {
+    	background-color: #000000;
+    }
+    .userOptions {
+    	position: relative;
+    	display: inline-block;
+	}
 </style>
 
 <body>
@@ -13,10 +43,22 @@
 		<div id="top" th:include="template :: masthead"></div>
 		
 		<div id="middle">
+			<div class="userOptions">
+				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/main}"><button class="userOptionsBtn">Edit</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/main}"><button class="userOptionsBtn">Delete</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
+				</div>
 			<form method="post" action="/main">
 				<fieldset>
 					<div class="form-group-lifts">
-						<input autofocus="true" class="form-control" name="liftName" placeholder="Lift Name" type="text"/>
+						<input class="form-control" name="liftName" placeholder="Lift Name" type="text"/>
 					</div>
 					<div class="form-group-lifts">
                         <input class="form-control" name="weight" placeholder="Weight(lbs)" type="text"/>
@@ -33,7 +75,6 @@
             
         <div th:replace="template :: footer"></div>
         
-        </div>
+       </div>
     </body>
  </html>
-		

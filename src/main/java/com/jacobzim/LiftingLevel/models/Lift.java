@@ -12,13 +12,15 @@ public class Lift {
 	private String id;
 	private String name;
 	private String description;
+	private String userId;
 	
 	public Lift() {};
 	
-	public Lift(String id, String name, String description) {
+	public Lift(String id, String name, String description, String userId) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.userId = userId;
 	}
 
 	public String getId() {
@@ -43,5 +45,13 @@ public class Lift {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 }

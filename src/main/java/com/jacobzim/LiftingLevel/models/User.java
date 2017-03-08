@@ -1,16 +1,18 @@
 package com.jacobzim.LiftingLevel.models;
 
 import java.util.Map;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
 public class User {
-
+	
 	@Id
-	private String id;
 	private String name;
 	private String password;
 	
@@ -19,20 +21,11 @@ public class User {
 	
 	public User() {};
 	
-	public User(String id, String name, String password){
-		this.id = id;
+	public User(String name, String password){
 		this.name = name;
 		this.password = password;
 	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -48,12 +41,14 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	//public Map<String, Lift> getLiftData() {
-		//return liftData;
-	//}
-
-	//public void setLiftData(Map<String, Lift> liftData) {
-		//this.liftData = liftData;
-	//}
 }
+
+	/* public Map<String, Lift> getLiftData() {
+		return liftData;
+	}
+
+	public void setLiftData(Map<String, Lift> liftData) {
+		this.liftData = liftData;
+	}
+}
+*/
