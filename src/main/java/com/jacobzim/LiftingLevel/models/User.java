@@ -15,17 +15,27 @@ public class User {
 	@Id
 	private String name;
 	private String password;
+	private boolean loginStatus;
 	
 	//Collection of lifts keys are the name of the lift
 	//private Map<String, Lift> liftData;
 	
 	public User() {};
 	
-	public User(String name, String password){
+	public User(String name, String password, boolean loginStatus) {
 		this.name = name;
 		this.password = password;
+		this.loginStatus = loginStatus;
 	}
-	
+		
+	public boolean getLoginStatus() {
+		return loginStatus;
+	}
+
+	public void setLoginStatus(boolean loginStatus) {
+		this.loginStatus = loginStatus;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -1,5 +1,7 @@
 package com.jacobzim.LiftingLevel.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,7 @@ import com.jacobzim.LiftingLevel.interfaces.UserDao;
 import com.jacobzim.LiftingLevel.models.User;
 
 @Controller
-public class UserController {
+public class UserController extends AbstractAuthenticationController {
 	
 	@Autowired
 	private UserDao userDao;
@@ -20,6 +22,7 @@ public class UserController {
     public String loginPage(){
         return "login";
     }
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(String name, String password, Model model){
     	User nameTaken = userDao.findByName(name);
@@ -32,16 +35,35 @@ public class UserController {
     		model.addAttribute("invalidPassword", "Invalid password");
     		return "login";
     	} else {
-    		//create a user status method here
+    		if (nameTaken.getLoginStatus() == true) {
+    			model.addAttribute("userNonExistant", "Please log out before logging in again!");
+    			return "login";
+    		} 
+    		else {
+    		nameTaken.setLoginStatus(true);
+    		userDao.save(nameTaken);
+    		//introduce a user status method here
     		return "redirect:main";
+    		}
     	}
     }
+    
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest currentUser){
+    	//getting a null pointer exception here, not sure what's causing it yet
+    	String userName = currentUser.getSession().getAttribute("name").toString();
+    	User user = userDao.findByName(userName);
+    	user.setLoginStatus(false);
+        return "logout";
+    }
+    
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model){
     	model.addAttribute("usermessage", "");
     	model.addAttribute("passwordmessage", "");
     	return "register";
     }
+    
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(String name, String password, String confirmPassword, Model model){
     	User nameTaken = userDao.findByName(name);
@@ -54,15 +76,11 @@ public class UserController {
     		model.addAttribute("passwordmessage", "Confirmation does not match original password!");
     		return "register";
     	} else {
-    		User registeredUser = new User(name, password);
+    		User registeredUser = new User(name, password, false);
     		userDao.save(registeredUser);
     		model.addAttribute("passwordmessage", "");
     		model.addAttribute("usermessage", "Account created!");
     		return "register";
     	}
-    }
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
-    public String loginPost(){
-    	return "main";
     }
 }
