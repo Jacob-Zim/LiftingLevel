@@ -1,6 +1,7 @@
 package com.jacobzim.LiftingLevel.controllers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,18 +14,18 @@ import com.jacobzim.LiftingLevel.interfaces.UserDao;
 import com.jacobzim.LiftingLevel.models.User;
 
 @Controller
-public class UserController extends AbstractAuthenticationController {
+public class UserController {
 	
 	@Autowired
 	private UserDao userDao;
 	
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
     
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String name, String password, Model model){
+    public String login(String name, String password, Model model, HttpServletRequest currentUser){
     	User nameTaken = userDao.findByName(name);
     	if (userDao.findByName(name) == null) {
     		model.addAttribute("userNonExistant", "UserName does not exist!");
@@ -35,37 +36,32 @@ public class UserController extends AbstractAuthenticationController {
     		model.addAttribute("invalidPassword", "Invalid password");
     		return "login";
     	} else {
-    		if (nameTaken.getLoginStatus() == true) {
+    		if (!(currentUser.getSession().getAttribute("session_id") == null)) {
     			model.addAttribute("userNonExistant", "Please log out before logging in again!");
     			return "login";
     		} 
     		else {
-    		nameTaken.setLoginStatus(true);
-    		userDao.save(nameTaken);
-    		//introduce a user status method here
-    		return "redirect:main";
+    			currentUser.getSession().setAttribute("session_id", nameTaken.getName());
+    			return "redirect:main";
     		}
     	}
     }
     
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest currentUser){
-    	//getting a null pointer exception here, not sure what's causing it yet
-    	String userName = currentUser.getSession().getAttribute("name").toString();
-    	User user = userDao.findByName(userName);
-    	user.setLoginStatus(false);
+    public String logoutPage(HttpServletRequest currentUser) {
+    	currentUser.getSession().invalidate();
         return "logout";
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registerPage(Model model){
+    public String registerPage(Model model) {
     	model.addAttribute("usermessage", "");
     	model.addAttribute("passwordmessage", "");
     	return "register";
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(String name, String password, String confirmPassword, Model model){
+    public String register(String name, String password, String confirmPassword, Model model, HttpServletRequest currentUser){
     	User nameTaken = userDao.findByName(name);
     	if (nameTaken != null) {
     		model.addAttribute("usermessage", "The name " + name + " already exists!");
@@ -75,8 +71,9 @@ public class UserController extends AbstractAuthenticationController {
     	else if (!(password.equals(confirmPassword))) {
     		model.addAttribute("passwordmessage", "Confirmation does not match original password!");
     		return "register";
-    	} else {
-    		User registeredUser = new User(name, password, false);
+    	}
+    	else {
+    		User registeredUser = new User(name, password, null);
     		userDao.save(registeredUser);
     		model.addAttribute("passwordmessage", "");
     		model.addAttribute("usermessage", "Account created!");

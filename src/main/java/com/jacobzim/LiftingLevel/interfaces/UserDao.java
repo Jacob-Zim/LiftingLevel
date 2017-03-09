@@ -11,5 +11,7 @@ import com.jacobzim.LiftingLevel.models.User;
 @Repository
 public interface UserDao extends CrudRepository<User, String> {
 	public User findByName(String name);
+	
+	public User findBySessionId(String sessionId);
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -15,25 +16,25 @@ public class User {
 	@Id
 	private String name;
 	private String password;
-	private boolean loginStatus;
+	private String sessionId;
 	
 	//Collection of lifts keys are the name of the lift
 	//private Map<String, Lift> liftData;
 	
 	public User() {};
 	
-	public User(String name, String password, boolean loginStatus) {
+	public User(String name, String password, String sessionId) {
 		this.name = name;
 		this.password = password;
-		this.loginStatus = loginStatus;
+		this.sessionId = sessionId;
 	}
 		
-	public boolean getLoginStatus() {
-		return loginStatus;
+	public String getSessionId() {
+		return sessionId;
 	}
 
-	public void setLoginStatus(boolean loginStatus) {
-		this.loginStatus = loginStatus;
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 	public String getName() {
