@@ -73,7 +73,7 @@ public class UserController {
     		return "register";
     	}
     	else {
-    		User registeredUser = new User(name, password, null);
+    		User registeredUser = new User(name, password, null, null);
     		userDao.save(registeredUser);
     		model.addAttribute("passwordmessage", "");
     		model.addAttribute("usermessage", "Account created!");

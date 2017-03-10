@@ -1,34 +1,44 @@
 package com.jacobzim.LiftingLevel.models;
 
-import java.util.Map;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
 public class User {
 	
-	@Id
-	private String name;
+	private String userId;
 	private String password;
 	private String sessionId;
 	
-	//Collection of lifts keys are the name of the lift
-	//private Map<String, Lift> liftData;
+	private List<Lift> liftData;
 	
 	public User() {};
 	
-	public User(String name, String password, String sessionId) {
-		this.name = name;
+	public User(String name, String password, String sessionId, List<Lift> liftData) {
+		this.userId = name;
 		this.password = password;
 		this.sessionId = sessionId;
+		this.liftData = liftData;
 	}
 		
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="id")
+	public List<Lift> getLiftData() {
+		return liftData;
+	}
+
+	public void setLiftData(List<Lift> liftData) {
+		this.liftData = liftData;
+	}
+
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -36,13 +46,16 @@ public class User {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-
+	
+	@Id
+	@GeneratedValue
+	@Column(name="user_id")
 	public String getName() {
-		return name;
+		return userId;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.userId = name;
 	}
 
 	public String getPassword() {
