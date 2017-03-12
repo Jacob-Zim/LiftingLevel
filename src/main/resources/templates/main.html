@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="template :: head">
+</head>
+<style>
+    #top {text-align: center;}
+    .dropbtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .dropbtn:hover, .dropbtn:focus {
+    	background-color: #000000;
+    }
+    .dropdown {
+    	position: relative;
+    	display: inline-block;
+	}
+	 .userOptionsBtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .userOptionsBtn:hover, .userOptionsBtn:focus {
+    	background-color: #000000;
+    }
+    .userOptions {
+    	position: relative;
+    	display: inline-block;
+	}
+</style>
+
+<body>
+
+	<div class="container">
+		
+		<div id="top" th:include="template :: masthead"></div>
+		
+		<div id="middle">
+			<div class="userOptions">
+				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/main}"><button class="userOptionsBtn">Edit</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/main}"><button class="userOptionsBtn">Delete</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
+				</div>
+				<div class="userOptions">
+				<a th:href="@{/logout}"><button class="userOptionsBtn">Logout</button></a>
+				</div>
+        </div>
+            
+        <div th:replace="template :: footer"></div>
+        
+       </div>
+    </body>
+ </html>
