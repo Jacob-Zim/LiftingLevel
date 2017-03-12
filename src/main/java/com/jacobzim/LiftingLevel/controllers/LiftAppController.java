@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,10 +33,11 @@ public class LiftAppController extends AuthenticationController {
     }
     
     @RequestMapping(value = "/createlift", method = RequestMethod.POST)
-    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description, int id) {
+    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description, int id, Model model) {
     	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
     	Lift createdLift = new Lift(id, liftName, description, user, reps, sets, weight);
     	liftDao.save(createdLift);
+    	model.addAttribute("liftData", user.getLiftData());
     	return loginCheck(currentUser, "redirect:main");
     }
 }

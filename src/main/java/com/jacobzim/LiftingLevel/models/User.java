@@ -15,7 +15,8 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 	
-	private String userId;
+	private int userId;
+	private String name;
 	private String password;
 	private String sessionId;
 	
@@ -23,11 +24,10 @@ public class User {
 	
 	public User() {};
 	
-	public User(String name, String password, String sessionId, List<Lift> liftData) {
-		this.userId = name;
+	public User(String name, String password, String sessionId) {
+		this.name = name;
 		this.password = password;
 		this.sessionId = sessionId;
-		this.liftData = liftData;
 	}
 		
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="id")
@@ -50,12 +50,12 @@ public class User {
 	@Id
 	@GeneratedValue
 	@Column(name="user_id")
-	public String getName() {
+	public int getUid() {
 		return userId;
 	}
 
-	public void setName(String name) {
-		this.userId = name;
+	public void setUid(int uid) {
+		this.userId = uid;
 	}
 
 	public String getPassword() {
@@ -64,6 +64,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
 

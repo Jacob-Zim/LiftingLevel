@@ -59,6 +59,10 @@
 				<a th:href="@{/logout}"><button class="userOptionsBtn">Logout</button></a>
 				</div>
         </div>
+        
+        <div class="liftList" th:each="liftData, stat : *{liftData}">
+        	<p class="lift-name" th:text="*{liftData.get(__${stat.index}__).getName()}"></p>
+        </div>
             
         <div th:replace="template :: footer"></div>
         
