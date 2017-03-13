@@ -60,8 +60,12 @@
 				</div>
         </div>
         
-        <div class="liftList" th:each="liftData, stat : *{liftData}">
-        	<p class="lift-name" th:text="*{liftData.get(__${stat.index}__).getName()}"></p>
+        <div class="liftList" th:each="lift,status : ${liftData}">
+        	<p class="lift-name" th:text="*{liftData[__${status.index}__].getName()}"></p>
+        	<p class="lift-description" th:text="*{liftData[__${status.index}__].getDescription()}"></p>
+        	<p class="lift-weight" th:text="*{liftData[__${status.index}__].getWeight()}"></p>
+        	<p class="lift-sets" th:text="*{liftData[__${status.index}__].getSets()}"></p>
+        	<p class="lift-reps" th:text="*{liftData[__${status.index}__].getReps()}"></p>
         </div>
             
         <div th:replace="template :: footer"></div>

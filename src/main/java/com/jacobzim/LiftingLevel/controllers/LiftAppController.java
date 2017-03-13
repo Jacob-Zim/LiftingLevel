@@ -1,5 +1,7 @@
 package com.jacobzim.LiftingLevel.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,9 @@ public class LiftAppController extends AuthenticationController {
 	private LiftDao liftDao;
 	
     @RequestMapping(value = "/main", method = RequestMethod.GET)
-    public String getMain(HttpServletRequest currentUser) {
+    public String getMain(HttpServletRequest currentUser, Model model) {
+    	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
+    	model.addAttribute("liftData", liftDao.findAllByUser(user));
     	return loginCheck(currentUser, "main");
     }
     
@@ -37,7 +41,7 @@ public class LiftAppController extends AuthenticationController {
     	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
     	Lift createdLift = new Lift(id, liftName, description, user, reps, sets, weight);
     	liftDao.save(createdLift);
-    	model.addAttribute("liftData", user.getLiftData());
+    	//liftdao is recognizing the keys, unfortunately the string is not being printed to the page
     	return loginCheck(currentUser, "redirect:main");
     }
 }
