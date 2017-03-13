@@ -3,7 +3,15 @@
 <head th:replace="template :: head">
 </head>
 <style>
-    #top {text-align: center;}
+    #top {
+    text-align: center;
+    }
+    #middle {
+    text-align: center;
+    }
+    #bottom {
+    text-align: center;
+    }
     .dropbtn {
     	background-color: #1a1a1a;
     	color: white;
@@ -37,14 +45,13 @@
 	}
 	.liftList {
 		border-style: solid;
-		border-color: #000080;
 		border-width: 4px;
 		border-radius: 5px;
 		margin-bottom: 15px;
-		margin-right: 200px;
 		font-size: 20px;
 	}
 	.liftListContainer {
+		margin: auto;
 		padding-bottom: 15px;
 	}
 	.lift-index {
@@ -87,16 +94,19 @@
 		<div id="middle">
 			<div class="userOptions">
 				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add Exercise</button></a>
-				</div>
-				<div class="userOptions">
+			</div>
+			<div class="userOptions">
 				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
-				</div>
-				<div class="userOptions">
+			</div>
+			<div class="userOptions">
 				<a th:href="@{/logout}"><button class="userOptionsBtn">Logout</button></a>
-				</div>
+			</div>
         </div>
         
         <div class="liftListContainer">
+        	<div class="userOptions">
+				<a th:href="@{/dates}"><button class="userOptionsBtn">Change Date</button></a>
+			</div>
         	<div class="liftList" th:each="lift,status : ${liftData}">
         		<form action="/main" method="post">
         			<button type="submit" class="userOptionsBtn" name="editBtn"
