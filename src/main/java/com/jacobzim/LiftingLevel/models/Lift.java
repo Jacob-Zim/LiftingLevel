@@ -23,14 +23,13 @@ public class Lift {
 		
 	public Lift() {};
 	
-	public Lift(int id, String name, String description, User user, String reps, String sets, String weight) {
+	public Lift(String name, String description, User user, String reps, String sets, String weight) {
 		this.name = name;
 		this.description = description;
 		this.user = user;
 		this.reps = reps;
 		this.sets = sets;
 		this.weight = weight;
-		this.id = id;
 	}
 
 	@Id

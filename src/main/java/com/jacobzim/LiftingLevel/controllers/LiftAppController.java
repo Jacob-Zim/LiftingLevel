@@ -31,17 +31,52 @@ public class LiftAppController extends AuthenticationController {
     	return loginCheck(currentUser, "main");
     }
     
+    @RequestMapping(value = "/main", method = RequestMethod.POST, params="editBtn")
+    public String getEditLift(int editBtn, HttpServletRequest currentUser, Model model) {
+    	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
+    	List<Lift> liftList = liftDao.findAllByUser(user);
+    	Lift liftToEdit = liftList.get(editBtn);
+    	model.addAttribute("liftName", liftToEdit.getName());
+    	model.addAttribute("liftDescription", liftToEdit.getDescription());
+    	model.addAttribute("liftWeight", liftToEdit.getWeight());
+    	model.addAttribute("liftSets", liftToEdit.getSets());
+    	model.addAttribute("liftReps", liftToEdit.getReps());
+    	model.addAttribute("liftNum", editBtn);
+    	return loginCheck(currentUser, "editlift");
+    }
+    
+    @RequestMapping(value = "/editlift", method = RequestMethod.POST, params="liftNumber")
+    public String editLift(HttpServletRequest currentUser, String liftNumber, String liftName, String description, String weight, String sets, String reps) {
+    	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
+    	List<Lift> liftList = liftDao.findAllByUser(user);
+    	Lift liftToEdit = liftList.get(Integer.parseInt(liftNumber));
+    	liftToEdit.setName(liftName);
+    	liftToEdit.setDescription(description);
+    	liftToEdit.setWeight(weight);
+    	liftToEdit.setSets(sets);
+    	liftToEdit.setReps(reps);
+    	liftDao.save(liftToEdit);
+    	return loginCheck(currentUser, "redirect:main");
+    }
+    
+    @RequestMapping(value = "/main", method = RequestMethod.POST, params="deleteBtn")
+    public String deleteLift(int deleteBtn, HttpServletRequest currentUser) {
+    	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
+    	List<Lift> liftList = liftDao.findAllByUser(user);
+    	liftDao.delete(liftList.get(deleteBtn).getId());
+    	return loginCheck(currentUser, "redirect:main");
+    }
+    
     @RequestMapping(value = "/createlift", method = RequestMethod.GET)
     public String getCreateLiftPage(HttpServletRequest currentUser) {
     	return loginCheck(currentUser, "createlift");
     }
     
     @RequestMapping(value = "/createlift", method = RequestMethod.POST)
-    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description, int id, Model model) {
+    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description) {
     	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
-    	Lift createdLift = new Lift(id, liftName, description, user, reps, sets, weight);
+    	Lift createdLift = new Lift(liftName, description, user, reps, sets, weight);
     	liftDao.save(createdLift);
-    	//liftdao is recognizing the keys, unfortunately the string is not being printed to the page
     	return loginCheck(currentUser, "redirect:main");
     }
 }

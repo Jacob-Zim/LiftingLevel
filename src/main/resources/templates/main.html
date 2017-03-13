@@ -33,6 +33,48 @@
     .userOptions {
     	position: relative;
     	display: inline-block;
+    	padding-bottom: 35px;
+	}
+	.liftList {
+		border-style: solid;
+		border-color: #000080;
+		border-width: 4px;
+		border-radius: 5px;
+		margin-bottom: 15px;
+		margin-right: 200px;
+		font-size: 20px;
+	}
+	.liftListContainer {
+		padding-bottom: 15px;
+	}
+	.lift-index {
+		margin-left: 5px;
+		margin-bottom: 2px;
+	}
+	.lift-name {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-description {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-weight {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-sets {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-reps {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 5px;
 	}
 </style>
 
@@ -44,13 +86,7 @@
 		
 		<div id="middle">
 			<div class="userOptions">
-				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add</button></a>
-				</div>
-				<div class="userOptions">
-				<a th:href="@{/main}"><button class="userOptionsBtn">Edit</button></a>
-				</div>
-				<div class="userOptions">
-				<a th:href="@{/main}"><button class="userOptionsBtn">Delete</button></a>
+				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add Exercise</button></a>
 				</div>
 				<div class="userOptions">
 				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
@@ -60,12 +96,20 @@
 				</div>
         </div>
         
-        <div class="liftList" th:each="lift,status : ${liftData}">
-        	<p class="lift-name" th:text="*{liftData[__${status.index}__].getName()}"></p>
-        	<p class="lift-description" th:text="*{liftData[__${status.index}__].getDescription()}"></p>
-        	<p class="lift-weight" th:text="*{liftData[__${status.index}__].getWeight()}"></p>
-        	<p class="lift-sets" th:text="*{liftData[__${status.index}__].getSets()}"></p>
-        	<p class="lift-reps" th:text="*{liftData[__${status.index}__].getReps()}"></p>
+        <div class="liftListContainer">
+        	<div class="liftList" th:each="lift,status : ${liftData}">
+        		<form action="/main" method="post">
+        			<button type="submit" class="userOptionsBtn" name="editBtn"
+        				th:value="${status.index}">Edit</button>
+        			<button type="submit" class="userOptionsBtn" name="deleteBtn"
+        				th:value="${status.index}">Delete</button>
+        		</form>
+        		<p class="lift-name" th:text="'Name: '+*{liftData[__${status.index}__].getName()}"></p>
+        		<p class="lift-description" th:text="'Description: '+*{liftData[__${status.index}__].getDescription()}"></p>
+        		<p class="lift-weight" th:text="'weight: '+*{liftData[__${status.index}__].getWeight()}"></p>
+        		<p class="lift-sets" th:text="'# sets: '+*{liftData[__${status.index}__].getSets()}"></p>
+        		<p class="lift-reps" th:text="'# reps: '+*{liftData[__${status.index}__].getReps()}"></p>
+        	</div>
         </div>
             
         <div th:replace="template :: footer"></div>
