@@ -2,8 +2,6 @@ package com.jacobzim.LiftingLevel.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.ui.Model;
-
 public class AuthenticationController {
 
     public String loginCheck(HttpServletRequest currentUser, String directory) {

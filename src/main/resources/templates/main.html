@@ -12,22 +12,7 @@
     #bottom {
     text-align: center;
     }
-    .dropbtn {
-    	background-color: #1a1a1a;
-    	color: white;
-    	padding: 14px 40px;
-    	font-size: 20px;
-    	border: none;
-    	cursor: pointer;
-    }
-    .dropbtn:hover, .dropbtn:focus {
-    	background-color: #000000;
-    }
-    .dropdown {
-    	position: relative;
-    	display: inline-block;
-	}
-	 .userOptionsBtn {
+	.userOptionsBtn {
     	background-color: #1a1a1a;
     	color: white;
     	padding: 14px 40px;
@@ -104,9 +89,6 @@
         </div>
         
         <div class="liftListContainer">
-        	<div class="userOptions">
-				<a th:href="@{/dates}"><button class="userOptionsBtn">Change Date</button></a>
-			</div>
         	<div class="liftList" th:each="lift,status : ${liftData}">
         		<form action="/main" method="post">
         			<button type="submit" class="userOptionsBtn" name="editBtn"

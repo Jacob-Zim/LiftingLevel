@@ -74,13 +74,3 @@ public class User {
 		this.name = name;
 	}
 }
-
-	/* public Map<String, Lift> getLiftData() {
-		return liftData;
-	}
-
-	public void setLiftData(Map<String, Lift> liftData) {
-		this.liftData = liftData;
-	}
-}
-*/
