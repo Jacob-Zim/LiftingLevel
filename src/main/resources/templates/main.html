@@ -12,22 +12,7 @@
     #bottom {
     text-align: center;
     }
-    .dropbtn {
-    	background-color: #1a1a1a;
-    	color: white;
-    	padding: 14px 40px;
-    	font-size: 20px;
-    	border: none;
-    	cursor: pointer;
-    }
-    .dropbtn:hover, .dropbtn:focus {
-    	background-color: #000000;
-    }
-    .dropdown {
-    	position: relative;
-    	display: inline-block;
-	}
-	 .userOptionsBtn {
+	.userOptionsBtn {
     	background-color: #1a1a1a;
     	color: white;
     	padding: 14px 40px;
@@ -92,8 +77,9 @@
 		<div id="top" th:include="template :: masthead"></div>
 		
 		<div id="middle">
+		<input type="hidden" name="selectedDate" th:value="${setMainDate}"></input>
 			<div class="userOptions">
-				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add Exercise</button></a>
+				<a th:href="@{/createlift}"><button class="userOptionsBtn" name="date" th:value="$">Add Exercise</button></a>
 			</div>
 			<div class="userOptions">
 				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
@@ -104,8 +90,8 @@
         </div>
         
         <div class="liftListContainer">
-        	<div class="userOptions">
-				<a th:href="@{/dates}"><button class="userOptionsBtn">Change Date</button></a>
+        	<div class="dateOption">
+				<a th:href="@{/date}"><button class="userOptionsBtn">Change Date</button></a>
 			</div>
         	<div class="liftList" th:each="lift,status : ${liftData}">
         		<form action="/main" method="post">

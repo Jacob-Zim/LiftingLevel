@@ -20,16 +20,18 @@ public class Lift {
 	private String reps;
 	private String sets;
 	private String weight;
+	private String date;
 		
 	public Lift() {};
 	
-	public Lift(String name, String description, User user, String reps, String sets, String weight) {
+	public Lift(String name, String description, User user, String reps, String sets, String weight, String date) {
 		this.name = name;
 		this.description = description;
 		this.user = user;
 		this.reps = reps;
 		this.sets = sets;
 		this.weight = weight;
+		this.date = date;
 	}
 
 	@Id
@@ -91,5 +93,15 @@ public class Lift {
 
 	public void setWeight(String weight) {
 		this.weight = weight;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "id")
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 }

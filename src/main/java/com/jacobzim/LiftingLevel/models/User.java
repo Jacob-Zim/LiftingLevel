@@ -21,6 +21,7 @@ public class User {
 	private String sessionId;
 	
 	private List<Lift> liftData;
+	private List<Date> dateData;
 	
 	public User() {};
 	
@@ -37,6 +38,15 @@ public class User {
 
 	public void setLiftData(List<Lift> liftData) {
 		this.liftData = liftData;
+	}
+
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="id")
+	public List<Date> getDateData() {
+		return dateData;
+	}
+
+	public void setDateData(List<Date> dateData) {
+		this.dateData = dateData;
 	}
 
 	public String getSessionId() {
@@ -74,13 +84,3 @@ public class User {
 		this.name = name;
 	}
 }
-
-	/* public Map<String, Lift> getLiftData() {
-		return liftData;
-	}
-
-	public void setLiftData(Map<String, Lift> liftData) {
-		this.liftData = liftData;
-	}
-}
-*/

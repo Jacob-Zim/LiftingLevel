@@ -7,11 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.jacobzim.LiftingLevel.interfaces.CalendarDao;
 import com.jacobzim.LiftingLevel.interfaces.LiftDao;
 import com.jacobzim.LiftingLevel.interfaces.UserDao;
+import com.jacobzim.LiftingLevel.models.Date;
 import com.jacobzim.LiftingLevel.models.Lift;
 import com.jacobzim.LiftingLevel.models.User;
 
@@ -23,6 +26,9 @@ public class LiftAppController extends AuthenticationController {
 	
 	@Autowired
 	private LiftDao liftDao;
+	
+	@Autowired
+	private CalendarDao calendarDao;
 	
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String getMain(HttpServletRequest currentUser, Model model) {
@@ -67,16 +73,39 @@ public class LiftAppController extends AuthenticationController {
     	return loginCheck(currentUser, "redirect:main");
     }
     
-    @RequestMapping(value = "/createlift", method = RequestMethod.GET)
-    public String getCreateLiftPage(HttpServletRequest currentUser) {
+    @RequestMapping(value = "/main", method = RequestMethod.POST, params="editBtn")
+    public String getCreateLiftPage(HttpServletRequest currentUser, Model model) {
+    	model.addAttribute("liftNum", editBtn);
     	return loginCheck(currentUser, "createlift");
     }
     
-    @RequestMapping(value = "/createlift", method = RequestMethod.POST)
-    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description) {
+    @RequestMapping(value = "/createlift", method = RequestMethod.POST, params="date")
+    public String createLift(HttpServletRequest currentUser, String liftName, String weight, String sets, String reps, String description, String date) {
     	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
-    	Lift createdLift = new Lift(liftName, description, user, reps, sets, weight);
+    	Lift createdLift = new Lift(liftName, description, user, reps, sets, weight, date);
     	liftDao.save(createdLift);
     	return loginCheck(currentUser, "redirect:main");
+    }
+    
+    @RequestMapping(value = "/date", method = RequestMethod.GET)
+    public String getDatePage(HttpServletRequest currentUser) {
+    	return loginCheck(currentUser, "date");
+    }
+    
+    @RequestMapping(value = "/date", method = RequestMethod.POST)
+    public String getDate(HttpServletRequest currentUser, String date, Model model) {
+    	Date dateExists = calendarDao.findOne(date);
+    	if (!(dateExists == null)) {
+    	} else {
+    	User user = userDao.findByName((String)currentUser.getSession().getAttribute("session_id"));
+    	Date newDate = new Date(user, date);
+    	calendarDao.save(newDate);
+    	}
+    	return loginCheck(currentUser, "main/"+date);
+    }
+    
+    @RequestMapping(value = "/main/{day}", method = RequestMethod.GET)
+    public String getWeekday(@PathVariable String day, HttpServletRequest currentUser, Model model ) {
+    	return loginCheck(currentUser, "main/"+day);
     }
 }

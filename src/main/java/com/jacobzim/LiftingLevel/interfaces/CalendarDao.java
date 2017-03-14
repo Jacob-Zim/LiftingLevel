@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.jacobzim.LiftingLevel.models.Date;
-import com.jacobzim.LiftingLevel.models.Lift;
 
 @Transactional
 @Repository
