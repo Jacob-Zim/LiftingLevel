@@ -1,5 +1,7 @@
 package com.jacobzim.LiftingLevel.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.jacobzim.LiftingLevel.interfaces.LiftDao;
 import com.jacobzim.LiftingLevel.interfaces.UserDao;
+import com.jacobzim.LiftingLevel.models.Lift;
 import com.jacobzim.LiftingLevel.models.User;
 
 @Controller
@@ -17,8 +21,21 @@ public class UserController extends AuthenticationController{
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private LiftDao liftDao;
+	
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
+        return "login";
+    }
+    
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public String errorPage() {
+        return "error";
+    }
+    
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String redirectLogin() {
         return "login";
     }
     
@@ -81,6 +98,47 @@ public class UserController extends AuthenticationController{
     
     @RequestMapping(value = "/usrsettings", method = RequestMethod.GET)
     public String getUserSettings(HttpServletRequest userStatus) {
+    	return loginCheck(userStatus, "usrsettings");
+    }
+    
+    @RequestMapping(value = "/usrsettings", method = RequestMethod.POST, params="editUser")
+    public String editUsername(HttpServletRequest userStatus, Model model, String name, String password) {
+    	User currentName = userDao.findByName((String)userStatus.getSession().getAttribute("session_id"));
+    	User nameTaken = userDao.findByName(name);
+    	if (nameTaken != null) {
+    		model.addAttribute("usermessage", "The name " + name + " already exists!");
+    		model.addAttribute("passwordmessage", "");
+    		return loginCheck(userStatus, "usrsettings");
+    	}
+    	else if (!(password.equals(currentName.getPassword()))) {
+    		model.addAttribute("passwordmessage", "Invalid Password!");
+    		return loginCheck(userStatus, "usrsettings");
+    	}
+    	else {
+    		currentName.setName(name);
+    		userDao.save(currentName);
+    		model.addAttribute("passwordmessage", "Username has been changed!");
+    		model.addAttribute("usermessage", "");
+    		return loginCheck(userStatus, "redirect:logout");
+    	}
+    }
+    
+    @RequestMapping(value = "/usrsettings", method = RequestMethod.POST, params="editPassword")
+    public String editPassword(HttpServletRequest userStatus, Model model, String newPassword, String confirmNewPassword, String oldPassword) {
+    	User user = userDao.findByName((String)userStatus.getSession().getAttribute("session_id"));
+    	if (!(newPassword.equals(confirmNewPassword))) {
+    		model.addAttribute("invalidConfirmPassword", "Desired Password does not match confirmation!");
+    		model.addAttribute("invalidPassword", "");
+    	}
+    	else if (!(oldPassword.equals(user.getPassword()))) {
+    		model.addAttribute("invalidConfirmPassword", "");
+    		model.addAttribute("invalidPassword", "Invalid Password!");
+    	} else {
+    		user.setPassword(newPassword);
+    		userDao.save(user);
+    		model.addAttribute("invalidConfirmPassword", "");
+    		model.addAttribute("invalidPassword", "Password has been changed!");
+    	}
     	return loginCheck(userStatus, "usrsettings");
     }
 }
