@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="template :: head">
+</head>
+<style>
+    #top {
+    text-align: center;
+    }
+    #middle {
+    text-align: center;
+    }
+    #bottom {
+    text-align: center;
+    }
+	.userOptionsBtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .userOptionsBtn:hover, .userOptionsBtn:focus {
+    	background-color: #000000;
+    }
+    .userOptions {
+    	position: relative;
+    	display: inline-block;
+    	padding-bottom: 35px;
+	}
+	.liftList {
+		border-style: solid;
+		border-width: 4px;
+		border-radius: 5px;
+		margin-bottom: 15px;
+		font-size: 20px;
+	}
+	.liftListContainer {
+		margin: auto;
+		padding-bottom: 15px;
+	}
+	.lift-index {
+		margin-left: 5px;
+		margin-bottom: 2px;
+	}
+	.lift-name {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-description {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-weight {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-sets {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+	}
+	.lift-reps {
+		margin-left: 5px;
+		margin-top: 2px;
+		margin-bottom: 5px;
+	}
+</style>
+
+<body>
+
+	<div class="container">
+		
+		<div id="top" th:include="template :: masthead"></div>
+		
+		<div id="middle">
+			<div class="userOptions">
+				<p class="userOptionsBtn" th:text="${date}"></p>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/createlift}"><button class="userOptionsBtn">Add Exercise</button></a>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/calendar}"><button class="userOptionsBtn">Workout Calendar</button></a>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/logout}"><button class="userOptionsBtn">Logout</button></a>
+			</div>
+        </div>
+        
+        <div class="liftListContainer">
+        	<div class="liftList" th:each="lift,status : ${liftData}">
+        		<form action="/main" method="post">
+        			<button type="submit" class="userOptionsBtn" name="editBtn"
+        				th:value="${status.index}">Edit</button>
+        			<button type="submit" class="userOptionsBtn" name="deleteBtn"
+        				th:value="${status.index}">Delete</button>
+        		</form>
+        		<p class="lift-name" th:text="'Name: '+*{liftData[__${status.index}__].getName()}"></p>
+        		<p class="lift-description" th:text="'Description: '+*{liftData[__${status.index}__].getDescription()}"></p>
+        		<p class="lift-weight" th:text="'weight: '+*{liftData[__${status.index}__].getWeight()}"></p>
+        		<p class="lift-sets" th:text="'# sets: '+*{liftData[__${status.index}__].getSets()}"></p>
+        		<p class="lift-reps" th:text="'# reps: '+*{liftData[__${status.index}__].getReps()}"></p>
+        	</div>
+        </div>
+            
+        <div th:replace="template :: footer"></div>
+        
+       </div>
+    </body>
+ </html>

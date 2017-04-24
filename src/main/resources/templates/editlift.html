@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="template :: head">
+</head>
+<style>
+    #top {text-align: center;}
+    #middle {text-align: center;}
+</style>
+
+<body>
+
+	<div class="container">
+		
+		<div id="top" th:include="template :: masthead"></div>
+		
+		<div id="middle">
+		<form method="post" action="/editlift">
+		<input type="hidden" name="liftNumber" th:value="${liftNum}"></input>
+				<fieldset>
+					<div class="form-group-lifts">
+						<input class="form-control" name="liftName" placeholder="Lift Name" type="text" th:value="${liftName}"/>
+					</div>
+					<div class="form-group-lifts">
+                        <input class="form-control" name="description" placeholder="Description" type="text" th:value="${liftDescription}"/>
+                    </div>
+					<div class="form-group-lifts">
+                        <input class="form-control" name="weight" placeholder="Weight(lbs)" type="text" th:value="${liftWeight}"/>
+                    </div>
+                    <div class="form-group-lifts">
+                        <input class="form-control" name="sets" placeholder="# of Sets" type="text" th:value="${liftSets}"/>
+                    </div>
+                    <div class="form-group-lifts">
+                        <input class="form-control" name="reps" placeholder="# of Reps" type="text" th:value="${liftReps}"/>
+                    </div>
+                    <div class="form-group-lifts">
+                        <button type="submit" class="btn btn-default">Save Changes</button>
+                    </div>
+                </fieldset>
+            </form>
+                    </div>
+            
+        <div th:replace="template :: footer"></div>
+        
+        </div>
+    </body>
+ </html>

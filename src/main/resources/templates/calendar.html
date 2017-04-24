@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head th:replace="template :: head">
+</head>
+<style>
+    #top {
+    text-align: center;
+    }
+    #middle {
+    text-align: center;
+    }
+    #bottom {
+    text-align: center;
+    }
+	.userOptionsBtn {
+    	background-color: #1a1a1a;
+    	color: white;
+    	padding: 14px 40px;
+    	font-size: 20px;
+    	border: none;
+    	cursor: pointer;
+    }
+    .userOptionsBtn:hover, .userOptionsBtn:focus {
+    	background-color: #000000;
+    }
+    .userOptions {
+    	position: relative;
+    	display: inline-block;
+    	padding-bottom: 35px;
+	}
+	.liftList {
+		border-style: solid;
+		border-width: 4px;
+		border-radius: 5px;
+		margin-bottom: 15px;
+		font-size: 20px;
+	}
+	.liftListContainer {
+		margin: auto;
+		padding-bottom: 15px;
+	}
+
+	.month {
+    padding: 20px 25px;
+    width: 100%;
+    background: #1a1a1a;
+	}
+
+	.month ul {
+    margin: 0;
+    padding: 0;
+	}
+
+	.month ul li {
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+	}
+
+	.month .prev {
+    float: left;
+    padding-top: 10px;
+	}
+
+	.month .next {
+    float: right;
+    padding-top: 10px;
+	}
+
+	.weekdays {
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ddd;
+	}
+
+	.weekdays li {
+    display: inline-block;
+    width: 13.6%;
+    color: #666;
+    text-align: center;
+	}
+
+	.days {
+    padding: 15px 0;
+    background: #eee;
+    margin: 0;
+	}
+
+	.dates {
+    list-style-type: none;
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    margin-bottom: 50px;
+    font-size:20px;
+    color: #777;
+	}
+
+	.dates .active {
+    padding: 5px;
+    background: #1abc9c;
+    color: white !important
+	}
+	
+</style>
+
+<body>
+
+	<div class="container">
+		
+		<div id="top" th:include="template :: masthead"></div>
+		
+		<div id="middle">
+			<div class="userOptions">
+				<form action="/calendar" method="post">
+					<button type="submit" class="userOptionsBtn" name="userOptionsBtn">Add Workout</button>
+				</form>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/main}"><button class="userOptionsBtn">Today's Workout</button></a>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/usrsettings}"><button class="userOptionsBtn">Account Settings</button></a>
+			</div>
+			<div class="userOptions">
+				<a th:href="@{/logout}"><button class="userOptionsBtn">Logout</button></a>
+			</div>
+        </div>
+      <div>
+
+		<!-- month works, need to get year to appear, also need to add function calls on next and prev to change month -->
+		<div class="month">
+		  <form action="/calendar" method="post">
+		    <button type="submit" class="prev" name="prev">&#10094;</button>
+		    <button type="submit" class="next" name="next">&#10095;</button>
+		  </form> 
+		<ul>
+	 	  <li style="text-align:center" th:text="${dateMonth}"></li>
+		  <li style="text-align:center" th:text="${dateYear}"></li>
+		</ul>
+		</div>
+		
+		<ul class="weekdays">
+		  <li>Sun</li>
+		  <li>Mon</li>
+		  <li>Tue</li>
+		  <li>Wed</li>
+		  <li>Thr</li>
+		  <li>Fri</li>
+		  <li>Sat</li>
+		</ul>
+		
+		<!-- <span class="active"></span> for highlighting a day -->
+		<!-- I need to call the position in order to place the date in the right box -->
+		<div class="days">
+			<div class="dates" th:each="Integer,status : ${daysInMonth}">
+			<p th:text="*{daysInMonth[__${status.index}__] == 0}? '' : *{daysInMonth[__${status.index}__].toString()} "></p>
+				<div class="dates" th:each="CalendarDate,dateStatus : ${dateData}">
+				<div th:if="*{dateData[__${dateStatus.index}__].structureDayForComparison() == daysInMonth[__${status.index}__]} and *{dateData[__${dateStatus.index}__].structureMonthForComparison() == (__${dateMonthIntRep}__)} and *{dateData[__${dateStatus.index}__].structureYearForComparison() == (__${dateYearIntRep}__)}">
+					<a th:href="@{/main}" th:text="*{dateData[__${dateStatus.index}__].getName()}"></a>
+				</div>
+				</div>
+				<div class="dates" th:each="CalendarDate,workoutStatus : ${dateCreate}">
+				<div th:if="*{dateCreate[__${workoutStatus.index}__].structureDayForComparison() != daysInMonth[__${status.index}__]} and *{daysInMonth[__${status.index}__] != 0} and *{dateCreate[__${workoutStatus.index}__].structureMonthForComparison() == (__${dateMonthIntRep}__)} and *{dateCreate[__${workoutStatus.index}__].structureYearForComparison() == (__${dateYearIntRep}__)} and *{(__${workoutStatus.index}__) == 0}">
+					<a th:href="@{/createworkout}">Create Workout</a>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+            
+        <div th:replace="template :: footer"></div>
+        
+       </div>
+    </body>
+ </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+
+<head th:replace="template :: head">
+</head>
+<style>
+    div.container {text-align: center;}
+    div.logout {font-size: 20px;}
+</style>
+
+<body>
+
+    <div class="container">
+
+        <div id="top" th:include="template :: masthead"></div>
+
+        <div id="middle">
+        	<div class="logout"><p class="logout-message">Come back Soon!</p></div>
+        	<div><a href="/login">Login</a></div>
+            <div>
+                <a href="/register">register</a> for an account
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
